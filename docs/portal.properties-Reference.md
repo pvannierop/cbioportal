@@ -143,9 +143,9 @@ skin.right_logo=
 ```
 
 ## Control default setting for filtering of genes in mutation and CNA tables of patient view
-Different samples of a patient may have been analyzed with different gene panels. In patient view mutations and discrete CNA's can be filtered based on whether the gene of respective mutations/CNA's was profiled in all samples of the patient (mutations profiled in `all samples`), or not (mutations profiled in `any sample`). Setting this field to `true` will make patient view select the `any samples` filter at startup. When set to false or left blank the patient view will default to the `all samples` filter setting.
+Different samples of a patient may have been analyzed with different gene panels. In patient view mutations and discrete CNA's can be filtered based on whether the gene of respective mutations/CNA's was profiled in all samples of the patient (mutations profiled in `all samples`), or not (mutations profiled in `any sample`). Setting this field to `true` will make patient view select the `all samples` filter at startup. When set to false or left blank the patient view will default to the `any samples` filter setting.
 ```
-skin.patientview.filter_genes_profiled_any_sample=
+skin.patientview.filter_genes_profiled_all_samples=
 ```
 
 # Segment File URL

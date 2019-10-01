@@ -218,8 +218,8 @@ Below you can find the complete list of all the available skin properties.
             <td>integer</td>
         </tr>
 		<tr>
-            <td>skin.patientview.filter_genes_profiled_any_sample</td>
-            <td>sets default setting for the genes filter in patient view to show mutations for genes profiled for mutations and/or CNA's in any sample of that patient. If unset, patient view will show mutations/CNA's only for genes that were profiled in all samples.</td>
+            <td>skin.patientview.filter_genes_profiled_all_samples</td>
+            <td>sets default setting for the genes filter in patient view to only show mutations for genes that were profiled for mutations or CNA's in all samples of that patient. If unset, patient view will show mutations/CNA's for genes that were profiled in any sample.</td>
             <td>false</td>
             <td>true / false</td>
         </tr>
