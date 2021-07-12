@@ -106,7 +106,9 @@ public class SampleController {
                     PagingConstants.MAX_PAGE_SIZE,
                     0,
                     null,
-                    direction.name()
+                    direction.name(),
+                    null,
+                    "read"
                 )
                 .stream()
                 .map(CancerStudy::getCancerStudyIdentifier)

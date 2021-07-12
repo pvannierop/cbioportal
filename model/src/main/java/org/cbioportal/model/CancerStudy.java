@@ -1,5 +1,7 @@
 package org.cbioportal.model;
 
+import com.fasterxml.jackson.databind.annotation.JsonSerialize;
+
 import java.io.Serializable;
 import java.util.Date;
 import javax.validation.constraints.NotNull;
@@ -31,7 +33,8 @@ public class CancerStudy implements Serializable {
     private Integer rppaSampleCount;
     private Integer completeSampleCount;
     private String referenceGenome;
-
+    private boolean hasReadPermission = true;
+    
     public Integer getCancerStudyId() {
         return cancerStudyId;
     }
@@ -219,4 +222,12 @@ public class CancerStudy implements Serializable {
     public String getReferenceGenome() { return  referenceGenome; }
     
     public void setReferenceGenome(String referenceGenome) { this.referenceGenome = referenceGenome; }
+
+    public boolean hasReadPermission() {
+        return hasReadPermission;
+    }
+
+    public void setHasReadPermission(boolean hasAccess) {
+        this.hasReadPermission = hasAccess;
+    }
 }

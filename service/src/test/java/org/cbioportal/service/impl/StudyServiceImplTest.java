@@ -31,25 +31,22 @@ public class StudyServiceImplTest extends BaseServiceImplTest {
     @Mock
     private CancerTypeService cancerTypeService;
 
-    @Before
-    public void setup() {
-        ReflectionTestUtils.setField(studyService, "AUTHENTICATE", "false");
-    }
-
     @Test
     public void getAllStudies() throws Exception {
 
         List<CancerStudy> expectedCancerStudyList = new ArrayList<>();
         CancerStudy cancerStudy = new CancerStudy();
+        cancerStudy.setHasReadPermission(false);
         expectedCancerStudyList.add(cancerStudy);
 
         Mockito.when(studyRepository.getAllStudies(KEYWORD, PROJECTION, PAGE_SIZE, PAGE_NUMBER, SORT, DIRECTION))
             .thenReturn(expectedCancerStudyList);
         Mockito.when(cancerTypeService.getPrimarySiteMap()).thenReturn(new HashMap<>());
 
-        List<CancerStudy> result = studyService.getAllStudies(KEYWORD, PROJECTION, PAGE_SIZE, PAGE_NUMBER, SORT, DIRECTION);
+        List<CancerStudy> result = studyService.getAllStudies(KEYWORD, PROJECTION, PAGE_SIZE, PAGE_NUMBER, SORT, DIRECTION, null, "read");
 
-        Assert.assertEquals(expectedCancerStudyList, result);
+        Assert.assertEquals(expectedCancerStudyList.get(0), result.get(0));
+        Assert.assertTrue(result.get(0).hasReadPermission());
     }
 
     @Test

@@ -20,6 +20,7 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.Authentication;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -54,6 +55,9 @@ public class StudyController {
 
     @Value("${app.name:unknown}")
     private String appName;
+
+    @Value("${skin.home_page.show_unauthorized_studies:false}")
+    private boolean showUnauthorizedStudiesOnHomePage;
     
     private boolean usingAuth() {
         return !authenticate.isEmpty()
@@ -73,7 +77,7 @@ public class StudyController {
             defaultResponse = studyService.getAllStudies(
                 null, Projection.SUMMARY.name(),
                 10000000, 0,
-                null, Direction.ASC.name());
+                null, Direction.ASC.name(), null,"read");
         }
     }
 
@@ -97,7 +101,8 @@ public class StudyController {
         @ApiParam("Name of the property that the result list is sorted by")
         @RequestParam(required = false) StudySortBy sortBy,
         @ApiParam("Direction of the sort")
-        @RequestParam(defaultValue = "ASC") Direction direction) {
+        @RequestParam(defaultValue = "ASC") Direction direction,
+        Authentication authentication) {
         
         // Only use this feature on the public portal and make sure it is never used
         // on portals using auth, as in auth setting, different users will have different
@@ -121,7 +126,7 @@ public class StudyController {
         } else {
             return new ResponseEntity<>(
                 studyService.getAllStudies(keyword, projection.name(), pageSize, pageNumber,
-                    sortBy == null ? null : sortBy.getOriginalValue(), direction.name()), HttpStatus.OK);
+                    sortBy == null ? null : sortBy.getOriginalValue(), direction.name(), authentication, getAccessLevel()), HttpStatus.OK);
         }
     }
 
@@ -131,7 +136,7 @@ public class StudyController {
     @ApiOperation("Get a study")
     public ResponseEntity<CancerStudy> getStudy(
         @ApiParam(required = true, value = "Study ID e.g. acc_tcga")
-        @PathVariable String studyId) throws StudyNotFoundException {
+        @PathVariable String studyId) throws StudyNotFoundException {   
 
         return new ResponseEntity<>(studyService.getStudy(studyId), HttpStatus.OK);
     }
@@ -189,5 +194,9 @@ public class StudyController {
         List<CancerStudyTags> cancerStudyTags = studyService.getTagsForMultipleStudies(studyIds);
 
         return new ResponseEntity<>(cancerStudyTags, HttpStatus.OK);
+    }
+    
+    private String getAccessLevel() {
+        return usingAuth() && showUnauthorizedStudiesOnHomePage ? "list" : "read";
     }
 }
